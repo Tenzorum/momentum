@@ -11,19 +11,76 @@ import DashboardIcon from '@atlaskit/icon/glyph/dashboard';
 import GearIcon from '@atlaskit/icon/glyph/settings';
 import SearchIcon from '@atlaskit/icon/glyph/search';
 import CreateIcon from '@atlaskit/icon/glyph/add';
-import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
 import ArrowleftIcon from '@atlaskit/icon/glyph/arrow-left';
+import { colors, themed } from '@atlaskit/theme';
 
 import CreateDrawer from '../components/CreateDrawer';
 import SearchDrawer from '../components/SearchDrawer';
 import HelpDropdownMenu from '../components/HelpDropdownMenu';
 import AccountDropdownMenu from '../components/AccountDropdownMenu';
 import atlaskitLogo from '../images/atlaskit.png';
+import tenzLogo from '../images/tenz_logo.png';
+
+const focus = {
+  outline: themed({ light: colors.B100, dark: colors.B75 }),
+};
+
+  const primaryBackground = colors.N800;
+
+  const item = {
+    default: {
+      background: 'transparent',
+    },
+    hover: {
+      background: colors.N700A,
+    },
+    active: {
+      // Currently there is no ramp for white opacity
+      background: 'rgba(255, 255, 255, 0.08)',
+    },
+    selected: {
+      background: colors.N700A,
+      text: colors.B100,
+    },
+    focus,
+    dragging: {
+      // Similar to active colour - but without opacity
+      background: colors.N600,
+    },
+  };
+
+  const dropdown = {
+    default: {
+      background: item.hover.background,
+    },
+    hover: {
+      // Going lighter to be different from hover
+      background: colors.N90A,
+    },
+    active: item.active,
+    selected: item.selected,
+    focus: item.focus,
+    dragging: item.dragging,
+  };
+
+  const theme = {
+    background: {
+      primary: primaryBackground,
+      secondary: colors.N700,
+      tertiary: colors.N700,
+    },
+    text: colors.N0,
+    subText: colors.N70,
+    keyline: colors.N900,
+    item,
+    dropdown,
+  };
+
 
 export default class StarterNavigation extends React.Component {
   state = {
     navLinks: [
-      ['/', 'Home', DashboardIcon],
+      ['/', 'My Dapps', DashboardIcon],
       ['/settings', 'Settings', GearIcon],
     ]
   };
@@ -43,23 +100,25 @@ export default class StarterNavigation extends React.Component {
 
   render() {
     const backIcon = <ArrowleftIcon label="Back icon" size="medium" />;
-    const globalPrimaryIcon = <AtlassianIcon label="Atlassian icon" size="xlarge" />;
+    const tenzIcon =  <img alt="tenzorum logo" src={tenzLogo} height={30} />;
 
     return (
       <Nav
+        globalTheme={theme}
         isOpen={this.context.navOpenState.isOpen}
         width={this.context.navOpenState.width}
         onResize={this.props.onNavResize}
         containerHeaderComponent={() => (
           <AkContainerTitle
-            href="https://atlaskit.atlassian.com/"
+            href="https://localhost:3000/"
             icon={
-              <img alt="atlaskit logo" src={atlaskitLogo} />
+              <img alt="tenzorum logo" src={atlaskitLogo} />
             }
-            text="Atlaskit"
+            text="Dapp Store"
           />
         )}
-        globalPrimaryIcon={globalPrimaryIcon}
+
+        globalPrimaryIcon={tenzIcon}
         globalPrimaryItemHref="/"
         globalSearchIcon={<SearchIcon label="Search icon" />}
         hasBlanket
@@ -69,7 +128,7 @@ export default class StarterNavigation extends React.Component {
             isOpen={this.state.openDrawer === 'search'}
             key="search"
             onBackButton={() => this.openDrawer(null)}
-            primaryIcon={globalPrimaryIcon}
+            primaryIcon={tenzIcon}
           >
             <SearchDrawer
               onResultClicked={() => this.openDrawer(null)}
@@ -83,7 +142,7 @@ export default class StarterNavigation extends React.Component {
             isOpen={this.state.openDrawer === 'create'}
             key="create"
             onBackButton={() => this.openDrawer(null)}
-            primaryIcon={globalPrimaryIcon}
+            primaryIcon={tenzIcon}
           >
             <CreateDrawer
               onItemClicked={() => this.openDrawer(null)}
