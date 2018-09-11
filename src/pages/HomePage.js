@@ -7,6 +7,7 @@ import MainSection from '../components/MainSection';
 import ContentWrapper from '../components/ContentWrapper';
 import PageTitle from '../components/PageTitle';
 import createNode from '../p2p/create-node';
+import {transferEtherNoReward} from 'tenzorum'
 
 let nodes = [];
 
@@ -72,6 +73,16 @@ export default class HomePage extends Component {
     })
   }
 
+  transferETH = async () => {
+    try {
+      const transfer = await transferEtherNoReward(1, "0xd4a0d9531Bf28C26869C526b2cAd2F2eB77D3844")
+      console.log('hello')
+    } catch(e) {
+      console.log('ERROR WITH TRANSFER', e);
+    }
+  }
+
+
   render() {
     return (
       <ContentWrapper>
@@ -97,9 +108,10 @@ export default class HomePage extends Component {
             onClick={this.context.showModal}
             onClose={() => { }}
           >Stake Tenz</Button>
-          <br/>
           <Button onClick={this.context.addFlag}>Show Entries</Button>
+          <Button onClick={this.transferETH}>Transfer ETH</Button>
         </ButtonGroup>
+        <br/>
         <AkCodeBlock language="c" text={nodes.map(node => (node + "\n").replace(/,/g , ""))}/>
       </ContentWrapper>
     );
